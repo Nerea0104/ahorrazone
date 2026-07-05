@@ -74,16 +74,23 @@ export default function DealCard({ deal, dict, lang }) {
         <div
           style={{
             marginTop: "4px",
-            background: "#6f42c1",
+            background: "linear-gradient(135deg, #6f42c1 0%, #7c3aed 100%)",
             color: "#fff",
-            fontWeight: 600,
-            fontSize: "0.88rem",
+            fontWeight: 700,
+            fontSize: "0.9rem",
             borderRadius: "10px",
-            padding: "9px",
-            textAlign: "center",
+            padding: "10px 14px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
+            boxShadow: "0 4px 12px rgba(111,66,193,0.25)",
           }}
         >
-          {dict.view} →
+          {dict.view}
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
         </div>
       </div>
     </Link>
