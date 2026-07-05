@@ -1,4 +1,7 @@
+import Link from "next/link";
 import { getDictionary } from "../../lib/i18n";
+import { getDeals } from "../../lib/deals";
+import DealCard from "../../components/DealCard";
 import HeroCarousel from "../../components/HeroCarousel";
 import Reveal from "../../components/Reveal";
 
@@ -19,7 +22,7 @@ export async function generateMetadata({ params }) {
 
 export default async function Home({ params }) {
   const { lang } = await params;
-  const dict = await getDictionary(lang);
+  const [dict, deals] = await Promise.all([getDictionary(lang), getDeals({ limit: 8 })]);
   const t = dict.home;
 
   return (
@@ -147,6 +150,58 @@ export default async function Home({ params }) {
           </div>
         </div>
       </section>
+
+      {/* ── LIVE DEALS ───────────────────────────────────────────────────── */}
+      {deals.length > 0 && (
+        <section style={{ background: "#fff", borderBottom: "1px solid #f0ecfb" }}>
+          <div className="container py-5">
+            <Reveal>
+              <div className="d-flex flex-column flex-sm-row align-items-sm-end justify-content-sm-between gap-3 mb-5">
+                <div>
+                  <span
+                    style={{
+                      display: "inline-block",
+                      background: "rgba(111,66,193,0.08)",
+                      border: "1px solid rgba(111,66,193,0.18)",
+                      borderRadius: "999px",
+                      color: "#6f42c1",
+                      fontSize: "0.75rem",
+                      fontWeight: 700,
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      padding: "4px 14px",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    {t.dealsEyebrow}
+                  </span>
+                  <h2 className="az-section-title" style={{ marginBottom: "6px" }}>
+                    {t.dealsTitle}
+                  </h2>
+                  <p style={{ color: "#6b7280", fontSize: "1rem", margin: 0 }}>
+                    {t.dealsSubtitle}
+                  </p>
+                </div>
+                <Link
+                  href={`/${lang}/ofertas`}
+                  className="az-btn-outline"
+                  style={{ whiteSpace: "nowrap", padding: "10px 22px", fontSize: "0.92rem" }}
+                >
+                  {t.dealsCta}
+                </Link>
+              </div>
+            </Reveal>
+
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+              {deals.map((deal, i) => (
+                <Reveal key={deal.slug} className="col" delay={i * 60}>
+                  <DealCard deal={deal} dict={dict.deal} lang={lang} />
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
       <section style={{ background: "#f8f9fc" }}>
