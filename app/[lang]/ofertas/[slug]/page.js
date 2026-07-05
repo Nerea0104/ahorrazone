@@ -26,15 +26,17 @@ export async function generateMetadata({ params }) {
       deal.original_price ? `${fmtPrice(deal.original_price, deal.currency, lang)} → ` : ""
     }${price}`;
 
+  const images = deal.image_url ? [{ url: deal.image_url, width: 800, height: 800, alt: deal.title }] : [];
   return {
     title,
     description,
     alternates: { canonical: `/${lang}/ofertas/${slug}` },
-    openGraph: {
+    openGraph: { title, description, type: "website", images },
+    twitter: {
+      card: deal.image_url ? "summary_large_image" : "summary",
       title,
       description,
-      type: "website",
-      images: deal.image_url ? [{ url: deal.image_url, width: 800, height: 800 }] : [],
+      images: deal.image_url ? [deal.image_url] : [],
     },
   };
 }
