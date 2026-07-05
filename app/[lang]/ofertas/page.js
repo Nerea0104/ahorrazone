@@ -21,7 +21,7 @@ export async function generateMetadata({ params }) {
 
 export default async function OfertasPage({ params }) {
   const { lang } = await params;
-  const [dict, deals] = await Promise.all([getDictionary(lang), getDeals({ limit: 96 })]);
+  const [dict, deals] = await Promise.all([getDictionary(lang), getDeals({ limit: 48 })]);
   const t = dict.ofertas;
 
   return (

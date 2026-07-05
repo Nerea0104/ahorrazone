@@ -1,10 +1,15 @@
 "use client";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import DealCard from "./DealCard";
 import { SOURCE_CONFIG } from "../lib/deals";
 
-export default function DealsGrid({ deals, dict, lang }) {
+const PAGE_SIZE = 48;
+
+export default function DealsGrid({ deals: initialDeals, dict, lang }) {
   const [active, setActive] = useState("all");
+  const [allDeals, setAllDeals] = useState(initialDeals);
+  const [loading, setLoading] = useState(false);
+  const [exhausted, setExhausted] = useState(initialDeals.length < PAGE_SIZE);
 
   const filters = [
     { key: "all",        label: dict.ofertas.filterAll },
@@ -13,7 +18,30 @@ export default function DealsGrid({ deals, dict, lang }) {
     { key: "eci",        label: dict.ofertas.filterEci },
   ];
 
-  const visible = active === "all" ? deals : deals.filter((d) => d.source === active);
+  const visible = active === "all" ? allDeals : allDeals.filter((d) => d.source === active);
+
+  const handleFilter = useCallback((key) => {
+    setActive(key);
+  }, []);
+
+  const loadMore = useCallback(async () => {
+    if (loading || exhausted) return;
+    setLoading(true);
+    try {
+      const source = active !== "all" ? `&source=${active}` : "";
+      const res = await fetch(`/api/deals?offset=${allDeals.length}&limit=${PAGE_SIZE}${source}`);
+      const next = await res.json();
+      if (!next.length || next.length < PAGE_SIZE) setExhausted(true);
+      setAllDeals((prev) => {
+        const seen = new Set(prev.map((d) => d.slug));
+        return [...prev, ...next.filter((d) => !seen.has(d.slug))];
+      });
+    } catch {
+      // silent — user can retry
+    } finally {
+      setLoading(false);
+    }
+  }, [loading, exhausted, active, allDeals.length]);
 
   return (
     <>
@@ -25,7 +53,7 @@ export default function DealsGrid({ deals, dict, lang }) {
           return (
             <button
               key={f.key}
-              onClick={() => setActive(f.key)}
+              onClick={() => handleFilter(f.key)}
               style={{
                 padding: "7px 16px",
                 borderRadius: "999px",
@@ -59,6 +87,29 @@ export default function DealsGrid({ deals, dict, lang }) {
               <DealCard deal={deal} dict={dict.deal} lang={lang} />
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Load more */}
+      {!exhausted && visible.length > 0 && (
+        <div className="text-center mt-5">
+          <button
+            onClick={loadMore}
+            disabled={loading}
+            style={{
+              padding: "12px 36px",
+              borderRadius: "999px",
+              border: "2px solid #6f42c1",
+              background: loading ? "#f3eeff" : "#fff",
+              color: "#6f42c1",
+              fontWeight: 700,
+              fontSize: "0.95rem",
+              cursor: loading ? "not-allowed" : "pointer",
+              transition: "all 0.18s",
+            }}
+          >
+            {loading ? dict.ofertas.loadingMore : dict.ofertas.loadMore}
+          </button>
         </div>
       )}
     </>
