@@ -1,48 +1,33 @@
 import Link from "next/link";
 
-// Plain flex header (not Bootstrap's .navbar, which forces nowrap with navbar-expand
-// and overflows on narrow screens). Wraps cleanly on small viewports.
 export default function Navigation({ lang, dict }) {
   const other = lang === "es" ? "en" : "es";
-  const linkStyle = { color: "#6f42c1", fontWeight: 500 };
+
   return (
-    <header className="bg-white shadow-sm">
-      <div className="container d-flex flex-wrap align-items-center justify-content-between gap-2 py-2">
-        <Link href={`/${lang}`} className="d-flex align-items-center">
-          <span
-            style={{
-              fontWeight: 700,
-              fontSize: "1.5rem",
-              color: "#6f42c1",
-              marginRight: "8px",
-              letterSpacing: "-0.5px",
-            }}
-          >
-            Ahorrazone
-          </span>
-          <span style={{ fontSize: "1.5rem" }}>💰</span>
+    <header className="az-nav">
+      <div
+        className="container d-flex flex-wrap align-items-center justify-content-between gap-2"
+        style={{ padding: "10px 12px" }}
+      >
+        {/* Brand */}
+        <Link href={`/${lang}`} className="az-nav-brand">
+          <span className="az-nav-brand-text">Ahorrazone</span>
+          <span style={{ fontSize: "1.3rem" }}>💰</span>
         </Link>
 
-        <nav className="d-flex align-items-center gap-3">
-          <Link href={`/${lang}/ofertas`} style={linkStyle}>
-            {dict.ofertas}
-          </Link>
-          <Link href={`/${lang}/privacy`} style={linkStyle}>
-            {dict.privacy}
-          </Link>
-          <Link
-            href={`/${other}`}
-            style={{
-              color: "#6f42c1",
-              fontWeight: 600,
-              border: "1px solid #6f42c1",
-              borderRadius: "8px",
-              padding: "2px 10px",
-              fontSize: "0.85rem",
-            }}
+        {/* Nav + CTA */}
+        <nav style={{ display: "flex", alignItems: "center", gap: "4px", flexWrap: "wrap" }}>
+          <Link href={`/${lang}/ofertas`} className="az-nav-link">{dict.ofertas}</Link>
+          <Link href={`/${lang}/privacy`} className="az-nav-link">{dict.privacy}</Link>
+          <Link href={`/${other}`} className="az-nav-locale">{other.toUpperCase()}</Link>
+          <a
+            href="https://t.me/Ahorrazone_bot"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="az-nav-cta"
           >
-            {other.toUpperCase()}
-          </Link>
+            ✈ {dict.cta}
+          </a>
         </nav>
       </div>
     </header>

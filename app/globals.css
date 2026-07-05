@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -7,35 +11,149 @@ body {
   background-color: #f8f9fc;
 }
 
-/* h1 that scales down on small screens */
-.az-h1 {
-  font-weight: 700;
-  font-size: clamp(2rem, 6vw, 2.8rem);
-  line-height: 1.15;
-}
-
 a {
   text-decoration: none;
 }
 
-/* Same lift-on-hover the old HoverButton had, but pure CSS (no JS) so pages stay
-   server-rendered. */
+/* ── Navigation ──────────────────────────────────────────────────────────────── */
+.az-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(111, 66, 193, 0.1);
+  box-shadow: 0 1px 24px rgba(0, 0, 0, 0.06);
+}
+.az-nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+}
+.az-nav-brand-text {
+  font-weight: 800;
+  font-size: 1.45rem;
+  background: linear-gradient(135deg, #6f42c1 0%, #9163e8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
+}
+.az-nav-link {
+  color: #4b3b73;
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.az-nav-link:hover {
+  background: rgba(111, 66, 193, 0.07);
+  color: #4b3b73;
+}
+.az-nav-locale {
+  color: #6f42c1;
+  font-weight: 600;
+  border: 1.5px solid rgba(111, 66, 193, 0.3);
+  border-radius: 8px;
+  padding: 4px 11px;
+  font-size: 0.82rem;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.az-nav-locale:hover {
+  background: rgba(111, 66, 193, 0.07);
+  color: #6f42c1;
+}
+.az-nav-cta {
+  background: linear-gradient(135deg, #6f42c1 0%, #7c3aed 100%);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 7px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(111, 66, 193, 0.3);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.az-nav-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(111, 66, 193, 0.4);
+  color: #fff;
+}
+
+/* ── Typography ─────────────────────────────────────────────────────────────── */
+.az-h1 {
+  font-weight: 800;
+  font-size: clamp(2rem, 6vw, 3rem);
+  line-height: 1.12;
+  letter-spacing: -0.5px;
+}
+
+.az-section-title {
+  font-weight: 800;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  letter-spacing: -0.3px;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────────── */
+.az-btn-primary {
+  background: linear-gradient(135deg, #6f42c1 0%, #7c3aed 100%);
+  color: #fff;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 8px 24px rgba(111, 66, 193, 0.35);
+  transition: all 0.22s ease;
+  display: inline-block;
+  text-decoration: none;
+}
+.az-btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(111, 66, 193, 0.45);
+  color: #fff;
+}
+
+.az-btn-outline {
+  background: #fff;
+  color: #6f42c1;
+  border: 2px solid #6f42c1;
+  padding: 12px 26px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.22s ease;
+  display: inline-block;
+  text-decoration: none;
+}
+.az-btn-outline:hover {
+  background: rgba(111, 66, 193, 0.06);
+  transform: translateY(-3px);
+  color: #6f42c1;
+}
+
+/* legacy lift (used in hero section) */
 .az-lift {
-  transition: all 0.2s ease-in-out;
+  transition: all 0.22s ease;
 }
 .az-lift:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 25px rgba(111, 66, 193, 0.4) !important;
+  box-shadow: 0 12px 28px rgba(111, 66, 193, 0.4) !important;
 }
 
-/* Reusable brand card (the white rounded card with the soft shadow). */
+/* ── Cards ───────────────────────────────────────────────────────────────────── */
 .az-card {
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
 
-/* Deal grid card hover */
 .az-deal-card {
   display: block;
   height: 100%;
@@ -47,7 +165,49 @@ a {
   box-shadow: 0 18px 36px rgba(0, 0, 0, 0.12);
 }
 
-/* Phone mockup (the hero "image" on the left) */
+/* ── Hero ────────────────────────────────────────────────────────────────────── */
+.az-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(1200px 520px at 110% -10%, rgba(111, 66, 193, 0.13), transparent 60%),
+    radial-gradient(900px 520px at -10% 110%, rgba(13, 202, 240, 0.09), transparent 55%),
+    #f8f9fc;
+}
+.az-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  z-index: 0;
+  pointer-events: none;
+}
+.az-hero > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Scroll hint arrow */
+.az-scroll-hint {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid rgba(111, 66, 193, 0.25);
+  color: #6f42c1;
+  font-size: 1rem;
+  animation: az-bounce 2s ease-in-out infinite;
+  opacity: 0.7;
+  cursor: default;
+}
+@keyframes az-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* ── Phone mockup ────────────────────────────────────────────────────────────── */
 .az-phone {
   position: relative;
   width: 100%;
@@ -56,8 +216,10 @@ a {
   background: #fff;
   border: 1px solid #efecf8;
   border-radius: 28px;
-  padding: 14px;
-  box-shadow: 0 30px 60px rgba(76, 59, 115, 0.22);
+  padding: 16px;
+  box-shadow:
+    0 30px 60px rgba(76, 59, 115, 0.22),
+    0 0 0 1px rgba(111, 66, 193, 0.06);
 }
 .az-phone-header {
   display: flex;
@@ -75,31 +237,10 @@ a {
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
+  flex: 0 0 auto;
 }
 
-/* ── Hero: soft branded gradient + decorative blurred blobs ─────────────── */
-.az-hero {
-  position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(1200px 520px at 110% -10%, rgba(111, 66, 193, 0.12), transparent 60%),
-    radial-gradient(900px 520px at -10% 110%, rgba(13, 202, 240, 0.08), transparent 55%),
-    #f8f9fc;
-}
-.az-blob {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(70px);
-  opacity: 0.45;
-  z-index: 0;
-  pointer-events: none;
-}
-.az-hero > .container {
-  position: relative;
-  z-index: 1;
-}
-
-/* trust chips under the CTAs */
+/* ── Trust chips ─────────────────────────────────────────────────────────────── */
 .az-chip {
   display: inline-flex;
   align-items: center;
@@ -107,14 +248,14 @@ a {
   background: #fff;
   border: 1px solid #ece9f6;
   color: #4b3b73;
-  font-size: 0.85rem;
+  font-size: 0.83rem;
   font-weight: 600;
-  padding: 6px 12px;
+  padding: 5px 11px;
   border-radius: 999px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-/* Telegram-style alert bubble inside the hero card */
+/* ── Telegram-style alert bubble ─────────────────────────────────────────────── */
 .az-alert {
   background: #f3f1fb;
   border: 1px solid #ece9f6;
@@ -122,49 +263,127 @@ a {
   padding: 14px 16px;
 }
 
-/* how-it-works step badge */
+/* ── Stats bar ───────────────────────────────────────────────────────────────── */
+.az-stat-num {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, #6f42c1 0%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+/* ── How it works ────────────────────────────────────────────────────────────── */
 .az-step-num {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
   background: rgba(111, 66, 193, 0.1);
   color: #6f42c1;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   display: flex;
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
+  box-shadow: 0 4px 12px rgba(111, 66, 193, 0.15);
 }
 
-/* subtle entrance + float */
+.az-step-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 28px 24px;
+  height: 100%;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(111, 66, 193, 0.07);
+  transition: box-shadow 0.22s ease, transform 0.22s ease;
+}
+.az-step-card:hover {
+  box-shadow: 0 12px 32px rgba(111, 66, 193, 0.12);
+  transform: translateY(-4px);
+}
+
+/* ── Channel CTA section ─────────────────────────────────────────────────────── */
+.az-channel-section {
+  background: linear-gradient(135deg, #4a1d96 0%, #6f42c1 55%, #7c3aed 100%);
+  position: relative;
+  overflow: hidden;
+}
+.az-channel-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.az-channel-eyebrow {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 16px;
+  margin-bottom: 20px;
+}
+.az-channel-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  color: #6f42c1;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 14px 30px;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transition: all 0.22s ease;
+}
+.az-channel-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.25);
+  color: #6f42c1;
+}
+
+/* ── Scroll-reveal (applied by Reveal.js after hydration) ────────────────────── */
+[data-reveal="pending"] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+[data-reveal="visible"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Animations ──────────────────────────────────────────────────────────────── */
 @keyframes az-fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
 }
 .az-fade-up {
-  animation: az-fade-up 0.6s ease both;
+  animation: az-fade-up 0.65s ease both;
 }
+
 @keyframes az-float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
 }
 .az-float {
   animation: az-float 6s ease-in-out infinite;
 }
+
 @media (prefers-reduced-motion: reduce) {
-  .az-fade-up,
-  .az-float {
+  .az-fade-up, .az-float, .az-scroll-hint {
     animation: none;
+  }
+  [data-reveal="pending"] {
+    opacity: 1;
+    transform: none;
   }
 }

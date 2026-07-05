@@ -3,6 +3,7 @@ import "../globals.css";
 
 import Navigation from "../../components/Navigation";
 import Footer from "../../components/Footer";
+import ScrollToTop from "../../components/ScrollToTop";
 import { getDictionary, isLocale, locales } from "../../lib/i18n";
 
 export function generateStaticParams() {
@@ -28,6 +29,7 @@ export default async function LangLayout({ children, params }) {
         <Navigation lang={locale} dict={dict.nav} />
         {children}
         <Footer lang={locale} dict={dict.footer} />
+        <ScrollToTop />
       </body>
     </html>
   );
