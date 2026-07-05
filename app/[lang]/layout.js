@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../globals.css";
 
 import Navigation from "../../components/Navigation";
+import Footer from "../../components/Footer";
 import { getDictionary, isLocale, locales } from "../../lib/i18n";
 
 export function generateStaticParams() {
@@ -26,6 +27,7 @@ export default async function LangLayout({ children, params }) {
       <body>
         <Navigation lang={locale} dict={dict.nav} />
         {children}
+        <Footer lang={locale} dict={dict.footer} />
       </body>
     </html>
   );
