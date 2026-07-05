@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDictionary } from "../../../../lib/i18n";
-import { getDeal, getDealSlugs, SOURCE_CONFIG, fmtPrice, fmtDate } from "../../../../lib/deals";
+import { getDeal, getDealSlugs, SOURCE_CONFIG, fmtPrice, fmtDate, fmtDateTime } from "../../../../lib/deals";
 
 export const dynamicParams = true;
 export const revalidate = 86400;
@@ -48,7 +48,7 @@ export default async function DealPage({ params }) {
   const src = SOURCE_CONFIG[deal.source] ?? SOURCE_CONFIG.amazon;
   const now = fmtPrice(deal.price, deal.currency, lang);
   const was = deal.original_price ? fmtPrice(deal.original_price, deal.currency, lang) : null;
-  const date = fmtDate(deal.detected_at, lang);
+  const date = fmtDateTime(deal.detected_at, lang);
   const savingsAmt =
     deal.original_price && deal.original_price > deal.price
       ? fmtPrice(deal.original_price - deal.price, deal.currency, lang)
