@@ -185,39 +185,107 @@ export default async function Home({ params }) {
 
       {/* ── CHANNEL CTA ──────────────────────────────────────────────────── */}
       <section className="az-channel-section">
-        <div className="container py-5 text-center" style={{ position: "relative", zIndex: 1 }}>
+        <div className="container py-5" style={{ position: "relative", zIndex: 1 }}>
           <Reveal>
-            <p className="az-channel-eyebrow">📢 {t.channelCta.eyebrow}</p>
-            <h2
+            {/* Header */}
+            <div className="text-center mb-5">
+              <p className="az-channel-eyebrow">{t.channelCta.eyebrow}</p>
+              <h2
+                style={{
+                  color: "#fff",
+                  fontWeight: 800,
+                  fontSize: "clamp(1.8rem, 4vw, 2.6rem)",
+                  letterSpacing: "-0.3px",
+                  marginBottom: "12px",
+                }}
+              >
+                {t.channelCta.h}
+              </h2>
+              <p
+                style={{
+                  color: "rgba(255,255,255,0.75)",
+                  fontSize: "1.05rem",
+                  maxWidth: "500px",
+                  margin: "0 auto",
+                  lineHeight: 1.65,
+                }}
+              >
+                {t.channelCta.lead}
+              </p>
+            </div>
+
+            {/* Features grid */}
+            <div className="row g-3 mb-4">
+              {t.channelCta.features.map((f, i) => (
+                <div key={i} className="col-12 col-sm-6 col-lg-4">
+                  <div
+                    style={{
+                      background: "rgba(255,255,255,0.1)",
+                      border: "1px solid rgba(255,255,255,0.15)",
+                      borderRadius: "14px",
+                      padding: "16px 20px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "12px",
+                      backdropFilter: "blur(8px)",
+                    }}
+                  >
+                    <span style={{ fontSize: "1.4rem", flexShrink: 0 }}>{f.icon}</span>
+                    <span style={{ color: "rgba(255,255,255,0.9)", fontSize: "0.9rem", fontWeight: 500, lineHeight: 1.4 }}>
+                      {f.text}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Participation callout */}
+            <div
               style={{
-                color: "#fff",
-                fontWeight: 800,
-                fontSize: "clamp(1.8rem, 4vw, 2.6rem)",
-                letterSpacing: "-0.3px",
-                marginBottom: "16px",
+                background: "rgba(255,255,255,0.12)",
+                border: "1px solid rgba(255,255,255,0.2)",
+                borderRadius: "20px",
+                padding: "28px 32px",
+                marginBottom: "40px",
+                backdropFilter: "blur(10px)",
               }}
             >
-              {t.channelCta.h}
-            </h2>
-            <p
-              style={{
-                color: "rgba(255,255,255,0.8)",
-                fontSize: "1.05rem",
-                maxWidth: "480px",
-                margin: "0 auto 36px",
-                lineHeight: 1.65,
-              }}
-            >
-              {t.channelCta.p}
-            </p>
-            <a
-              href="https://t.me/ahorrazonehunters"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="az-channel-btn"
-            >
-              📢 {t.channelCta.cta}
-            </a>
+              <div className="row align-items-center g-3">
+                <div className="col-lg-8">
+                  <h4 style={{ color: "#fff", fontWeight: 700, marginBottom: "8px" }}>
+                    👇 {t.channelCta.participateH}
+                  </h4>
+                  <p style={{ color: "rgba(255,255,255,0.8)", marginBottom: 0, lineHeight: 1.65, fontSize: "0.95rem" }}>
+                    {t.channelCta.participateP}
+                  </p>
+                </div>
+                <div className="col-lg-4 text-lg-end">
+                  <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", justifyContent: "flex-start" }} className="d-lg-flex justify-content-lg-end">
+                    <div style={{ textAlign: "center" }}>
+                      <div style={{ fontSize: "2rem", fontWeight: 900, color: "#fff", lineHeight: 1 }}>1</div>
+                      <div style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.6)", marginTop: "2px" }}>punto / post</div>
+                    </div>
+                    <div style={{ width: "1px", background: "rgba(255,255,255,0.2)", margin: "0 4px" }} />
+                    <div style={{ textAlign: "center" }}>
+                      <div style={{ fontSize: "2rem", fontWeight: 900, color: "#fff", lineHeight: 1 }}>100</div>
+                      <div style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.6)", marginTop: "2px" }}>pts = regalo 🎁</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div className="text-center">
+              <a
+                href="https://t.me/ahorrazonehunters"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="az-channel-btn"
+              >
+                📢 {t.channelCta.cta}
+              </a>
+            </div>
           </Reveal>
         </div>
       </section>
