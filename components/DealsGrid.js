@@ -1,5 +1,6 @@
 "use client";
 import { useState, useCallback, useMemo } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import DealCard from "./DealCard";
 import { SOURCE_CONFIG } from "../lib/deals";
 
@@ -23,12 +24,42 @@ function sortDeals(deals, sort) {
 
 export default function DealsGrid({ deals: initialDeals, dict, lang }) {
   const t = dict.ofertas;
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const [source, setSource] = useState("all");
-  const [sort, setSort] = useState("newest");
+  // Filter/sort live in the URL so the browser back button restores them
+  const source = searchParams.get("source") ?? "all";
+  const sort = searchParams.get("sort") ?? "newest";
+
   const [allDeals, setAllDeals] = useState(initialDeals);
   const [loading, setLoading] = useState(false);
   const [exhausted, setExhausted] = useState(initialDeals.length < PAGE_SIZE);
+
+  const updateParams = useCallback(
+    (updates) => {
+      const params = new URLSearchParams(searchParams.toString());
+      Object.entries(updates).forEach(([k, v]) => {
+        if (v === null || v === "all" || v === "newest") {
+          params.delete(k);
+        } else {
+          params.set(k, v);
+        }
+      });
+      const qs = params.toString();
+      router.replace(qs ? `?${qs}` : "?", { scroll: false });
+    },
+    [router, searchParams]
+  );
+
+  const handleSource = useCallback(
+    (key) => updateParams({ source: key }),
+    [updateParams]
+  );
+
+  const handleSort = useCallback(
+    (e) => updateParams({ sort: e.target.value }),
+    [updateParams]
+  );
 
   const filters = [
     { key: "all",        label: t.filterAll },
@@ -48,10 +79,6 @@ export default function DealsGrid({ deals: initialDeals, dict, lang }) {
     const filtered = source === "all" ? allDeals : allDeals.filter((d) => d.source === source);
     return sortDeals(filtered, sort);
   }, [allDeals, source, sort]);
-
-  const handleSource = useCallback((key) => setSource(key), []);
-
-  const handleSort = useCallback((e) => setSort(e.target.value), []);
 
   const loadMore = useCallback(async () => {
     if (loading || exhausted) return;
@@ -93,14 +120,7 @@ export default function DealsGrid({ deals: initialDeals, dict, lang }) {
         }}
       >
         {/* Row 1 — source filters */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            flexWrap: "wrap",
-          }}
-        >
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
           <span
             style={{
               fontSize: "0.75rem",
@@ -145,13 +165,7 @@ export default function DealsGrid({ deals: initialDeals, dict, lang }) {
         </div>
 
         {/* Divider */}
-        <div
-          style={{
-            height: "1px",
-            background: "rgba(111,66,193,0.07)",
-            margin: "14px 0",
-          }}
-        />
+        <div style={{ height: "1px", background: "rgba(111,66,193,0.07)", margin: "14px 0" }} />
 
         {/* Row 2 — count + sort */}
         <div
@@ -163,13 +177,7 @@ export default function DealsGrid({ deals: initialDeals, dict, lang }) {
             flexWrap: "wrap",
           }}
         >
-          <span
-            style={{
-              fontSize: "0.83rem",
-              color: "#9ca3af",
-              fontWeight: 500,
-            }}
-          >
+          <span style={{ fontSize: "0.83rem", color: "#9ca3af", fontWeight: 500 }}>
             {resultCount}
           </span>
 
@@ -210,7 +218,6 @@ export default function DealsGrid({ deals: initialDeals, dict, lang }) {
                   </option>
                 ))}
               </select>
-              {/* Custom chevron */}
               <svg
                 style={{
                   position: "absolute",

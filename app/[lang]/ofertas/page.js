@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { getDictionary } from "../../../lib/i18n";
 import { getDeals, getDealsToday } from "../../../lib/deals";
 import DealsGrid from "../../../components/DealsGrid";
@@ -68,7 +69,9 @@ export default async function OfertasPage({ params }) {
 
       {/* Grid */}
       <div className="container py-5">
-        <DealsGrid deals={deals} dict={dict} lang={lang} />
+        <Suspense>
+          <DealsGrid deals={deals} dict={dict} lang={lang} />
+        </Suspense>
       </div>
     </div>
   );
