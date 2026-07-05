@@ -1,6 +1,7 @@
 import { getDictionary } from "../../../lib/i18n";
-import { getDeals } from "../../../lib/deals";
+import { getDeals, getDealsToday } from "../../../lib/deals";
 import DealsGrid from "../../../components/DealsGrid";
+import DealsFeatured from "../../../components/DealsFeatured";
 
 export const revalidate = 3600;
 
@@ -21,31 +22,47 @@ export async function generateMetadata({ params }) {
 
 export default async function OfertasPage({ params }) {
   const { lang } = await params;
-  const [dict, deals] = await Promise.all([getDictionary(lang), getDeals({ limit: 48 })]);
+  const [dict, todayDeals, deals] = await Promise.all([
+    getDictionary(lang),
+    getDealsToday({ fallbackLimit: 6 }),
+    getDeals({ limit: 48 }),
+  ]);
   const t = dict.ofertas;
+
+  // Detect if the featured deals are actually from today
+  const now = new Date();
+  const todayStr = now.toISOString().slice(0, 10);
+  const isToday =
+    todayDeals.length > 0 &&
+    todayDeals[0].detected_at &&
+    new Date(todayDeals[0].detected_at).toISOString().slice(0, 10) === todayStr;
 
   return (
     <div style={{ minHeight: "60vh" }}>
+      {/* Featured deals strip */}
+      <DealsFeatured deals={todayDeals} dict={dict} lang={lang} isToday={isToday} />
+
       {/* Header */}
       <div
         style={{
-          background: "linear-gradient(135deg, rgba(111,66,193,0.08) 0%, rgba(13,202,240,0.05) 100%)",
-          borderBottom: "1px solid rgba(111,66,193,0.1)",
-          padding: "48px 0 40px",
+          background: "linear-gradient(135deg, rgba(111,66,193,0.06) 0%, rgba(13,202,240,0.04) 100%)",
+          borderBottom: "1px solid rgba(111,66,193,0.08)",
+          padding: "36px 0 28px",
         }}
       >
         <div className="container">
           <h1
             style={{
               fontWeight: 800,
-              fontSize: "clamp(1.8rem, 4vw, 2.4rem)",
-              marginBottom: "8px",
+              fontSize: "clamp(1.6rem, 3.5vw, 2.2rem)",
+              marginBottom: "6px",
               color: "#1a1033",
             }}
+            id="grid"
           >
             {t.title}
           </h1>
-          <p style={{ color: "#6b7280", fontSize: "1rem", margin: 0 }}>{t.subtitle}</p>
+          <p style={{ color: "#6b7280", fontSize: "0.97rem", margin: 0 }}>{t.subtitle}</p>
         </div>
       </div>
 
